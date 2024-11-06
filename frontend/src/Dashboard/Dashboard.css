@@ -1,0 +1,71 @@
+
+
+
+
+.Dashboard
+{
+    grid-area: main;
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: 
+        "stat1 stat2"
+        "last tasks"
+    ;
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+.Dashboard > div
+{
+    background-color: rgb(215, 215, 215);
+    border-radius: 10px;
+}
+
+.WordCount
+{
+    grid-area: stat1;
+}
+
+.WordCount svg
+{
+    overflow: inherit !important;
+}
+
+.TimeSpent
+{
+    grid-area: stat2;
+}
+
+
+.LastResource
+{
+    grid-area: last;
+    color: black;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.LastResource img
+{
+    width: 50%;
+    aspect-ratio: 1;
+}
+
+.tasks
+{
+    grid-area: tasks;
+    padding: 10px 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.tasks img
+{
+    height: 50%;
+}
+
