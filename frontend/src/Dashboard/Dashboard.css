@@ -14,11 +14,12 @@
     ;
     gap: 0.5rem;
     padding: 0.5rem;
+    background-color: var(--bg-color);
 }
 
 .Dashboard > div
 {
-    background-color: rgb(215, 215, 215);
+    background-color: #fff;
     border-radius: 10px;
 }
 

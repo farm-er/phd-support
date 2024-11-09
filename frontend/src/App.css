@@ -46,13 +46,13 @@
 {
     position: relative;
     grid-area: aside;
-    background-color: red;
+    background-color: var(--nav-color);
 }
 
 .aside nav
 {
     margin-top: 100px;
-    padding: 0.25rem;
+    padding: 0.25rem 0 0.25rem 0.25rem;
 }
 
 .aside ul
@@ -73,13 +73,20 @@
     font-size: 1.25rem;
     line-height: 1;
     color: #fff;
+    border-radius: 5px 0 0 5px;
+    cursor: pointer;
+}
+
+.aside li.active
+{
+    background-color: #fff;
+    color: var(--nav-color);
 }
 
 .aside li:hover
 {
-    cursor: pointer;
     background-color: #fff;
-    color: red;
+    color: var(--nav-color);
 }
 
 .aside span
