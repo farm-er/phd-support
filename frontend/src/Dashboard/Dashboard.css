@@ -4,10 +4,11 @@
 
 .Dashboard
 {
+    box-sizing: border-box;
     grid-area: main;
     display: grid;
-    grid-template-columns: 400px 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: 40% auto;
     grid-template-areas: 
         "stat1 stat2"
         "last tasks"

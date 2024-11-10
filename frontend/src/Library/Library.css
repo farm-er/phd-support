@@ -1,0 +1,80 @@
+
+
+
+.Library
+{
+    grid-area: main;
+    display: grid;
+    grid-template-columns: 300px auto;
+    grid-template-rows: 200px auto;
+    grid-template-areas: 
+        "header header"
+        "topics body"
+    ;
+}
+
+.LibraryHeader
+{
+    grid-area: header;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    padding: 50px;
+}
+
+.LibraryHeader input
+{
+    width: 200px;
+    height: 20px;
+    padding: 5px 15px;
+}
+
+.LibraryBody
+{
+    grid-area: body;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    display: flex;
+    flex-flow: column;
+}
+
+.File
+{
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+}
+
+.File .fileName
+{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.File .fileName > i
+{
+    font-size: 30px;
+}
+
+.LibraryTopics
+{
+    grid-area: topics;
+    display: flex;
+    flex-flow: column;
+    overflow-y: scroll;
+    gap: 10px;
+    padding: 5px;
+    border-top: 1px solid black;
+}
+
+.Topic
+{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid black;
+}

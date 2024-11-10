@@ -46,14 +46,15 @@ function App() {
                             <i className='bx bxs-file-doc'></i>
                             <span>Production</span>
                         </li>
-                        <li onClick={(e) => setIndex(2)} className={index===2?'active':undefined}>
-                            <i className='bx bx-history'></i>
-                            <span>Historique</span>
-                        </li>
                         <li onClick={(e) => setIndex(4)} className={index===4?'active':undefined}>
                             <i className='bx bx-library'></i>
                             <span>Bibliotheque</span>
                         </li>
+                        <li onClick={(e) => setIndex(2)} className={index===2?'active':undefined}>
+                            <i className='bx bx-history'></i>
+                            <span>Historique</span>
+                        </li>
+                        
                     </ul>
                 </nav>
 
