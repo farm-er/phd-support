@@ -12,7 +12,7 @@
     background-color: var(--bg-color);
     display: grid;
     grid-template-columns: 60px 1fr;
-    grid-template-rows: 1fr;
+    grid-template-rows: 100vh;
     grid-template-areas: 
         "aside main"
     ;
