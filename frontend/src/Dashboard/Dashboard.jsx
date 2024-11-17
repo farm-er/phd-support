@@ -1,10 +1,9 @@
 import { Bar, BarChart, CartesianGrid, Legend, Pie, PieChart, ResponsiveContainer, Sector, Tooltip, XAxis, YAxis } from 'recharts';
 import './Dashboard.css'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import UptoDate from '../assets/images/uptodate.gif'
-import Unfinished from '../assets/images/unfinished.gif'
 
+import { GetStatistics, GetDaysStatistics} from '../../wailsjs/go/database/Db'
 
 
 
@@ -58,47 +57,12 @@ const renderActiveShape = (props) => {
 
 
 
-
 const Dashboard = ({gotoTasks}) => {
 
 
-    const data = [
-        {
-          name: 'Lundi',
-          production: 4000,
-          consommation: 2400,
-        },
-        {
-          name: 'Mardi',
-          production: 4000,
-          consommation: 2400,
-        },
-        {
-          name: 'Mercredi',
-          production: 4000,
-          consommation: 2400,
-        },
-        {
-          name: 'Jeudi',
-          production: 4000,
-          consommation: 2400,
-        },
-        {
-          name: 'Vendredi',
-          production: 4000,
-          consommation: 2400,
-        },
-        {
-          name: 'Samedi',
-          production: 4000,
-          consommation: 2400,
-        },
-        {
-          name: 'Dimanche',
-          production: 4000,
-          consommation: 2400,
-        },
-    ];
+    const [ stats, setStats] = useState({})
+
+    const [ barGraphData, setBarGraphData] = useState( [])
 
     const pieData = [
         { name: 'Group A', value: 400 },
@@ -109,13 +73,59 @@ const Dashboard = ({gotoTasks}) => {
 
     const [pieIndex, setPieIndex] = useState(null);
 
-    const onPieEnter = (_, index) => {
-    setPieIndex( index);
-    };
+    const onPieEnter = (_, index) => setPieIndex( index);
 
-    const onPieLeave = () => {
-    setPieIndex( null)
-    }
+    const onPieLeave = () => setPieIndex( null)
+
+
+    // TODO: you don't need to pull from the database every time
+
+    useEffect( () => {
+
+
+      const weekDays = [
+        'Lundi',
+        'Mardi',
+        'Mercredi',
+        'jeudi',
+        'Vendredi',
+        'Samedi',
+        'Dimanche' 
+      ]
+
+
+      // need to get overall statistics and get the current week's statistics
+      GetStatistics().then( 
+        (res) => {
+
+          setStats( prev => res)
+
+          GetDaysStatistics( res.WeekId).then(
+            (res) => {
+
+              setBarGraphData( prev => {                  
+                  let data = []
+                  for (let i=0; i<res.length; i++) {
+                    data.push({ day: res[i].Day, production: res[i].Prod, consumption: res[i].Cons})
+                  }
+
+                  const l = res.length
+
+                  for (let i=l; i<7; i++){
+                    data.push( { day: weekDays[i], production: 0, consumption: 0})
+                  }
+
+                  return data
+                }
+              )
+            }
+          ).catch( (e) => console.log(e))
+        }
+      ).catch( (e) => {
+        console.log("DASHBOARD: ", e)
+      })
+
+    }, [])
 
     return (
         <div className="Dashboard">
@@ -145,7 +155,7 @@ const Dashboard = ({gotoTasks}) => {
                     <BarChart
                         width={500}
                         height={300}
-                        data={data}
+                        data={barGraphData}
                         margin={{
                             top: 20,
                             right: 30,
@@ -154,26 +164,26 @@ const Dashboard = ({gotoTasks}) => {
                         }}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
+                        <XAxis dataKey="day" />
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="consommation" stackId="a" fill="#8884d8" />
+                        <Bar dataKey="consumption" stackId="a" fill="#8884d8" />
                         <Bar dataKey="production" stackId="a" fill="#82ca9d" />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
             <div className="LastResource">
                 <p>Vous êtes à jour</p>
-                <img src={UptoDate} alt="" />
             </div>
             <div className="tasks">
                 <div className="task">
-                    <h3>Task title or name</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum consectetur dolor earum ipsam nisi dolorum praesentium assumenda facilis veritatis sit.</p>
+                    <h3>You have {stats.Todo} Tasks to start</h3>
+                    <h3>{stats.InProgress} Tasks to complete</h3>
+                    <h3>You've done {stats.Done}</h3>
+                    <h3>You have {stats.Hold} on hold</h3>
                     <button onClick={() => gotoTasks()}>Entrer</button>
                 </div>
-                <img src={Unfinished} alt="" />
             </div>
         </div>
     );

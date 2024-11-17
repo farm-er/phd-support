@@ -6,8 +6,20 @@ export function AddTask(arg1, arg2, arg3, arg4) {
   return window['go']['database']['Db']['AddTask'](arg1, arg2, arg3, arg4);
 }
 
+export function GetDaysStatistics(arg1) {
+  return window['go']['database']['Db']['GetDaysStatistics'](arg1);
+}
+
+export function GetStatistics() {
+  return window['go']['database']['Db']['GetStatistics']();
+}
+
 export function GetTasks() {
   return window['go']['database']['Db']['GetTasks']();
+}
+
+export function GetWeekStatistics(arg1) {
+  return window['go']['database']['Db']['GetWeekStatistics'](arg1);
 }
 
 export function RemoveTask(arg1) {

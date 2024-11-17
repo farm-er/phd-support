@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"embed"
 	"log"
 	"os"
@@ -45,6 +46,9 @@ func main() {
 		Bind: []interface{}{
 			app,
 			db,
+		},
+		OnShutdown: func(ctx context.Context) {
+			db.Db.Close()
 		},
 	})
 

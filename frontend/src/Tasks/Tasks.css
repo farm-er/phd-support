@@ -101,7 +101,6 @@
     border: 1px solid black;
     border-radius: 10px;
     user-select: none;
-    background-color: red;
     cursor: pointer;
 }
 
@@ -237,5 +236,11 @@
     justify-content: center;
     align-items: center;
     font-size: 30px;
+    transition: all 0.3s ease;
 }
 
+/* NOT WORKING FOR NOW */
+.TasksDeleteArea:hover
+{
+    transform: scale(1.05);
+}

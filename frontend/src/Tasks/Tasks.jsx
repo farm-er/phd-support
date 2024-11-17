@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './Tasks.css';
 
-import { GetTasks, AddTask, UpdateTaskList } from '../../wailsjs/go/database/Db';
+import { GetTasks, AddTask, UpdateTaskList, RemoveTask } from '../../wailsjs/go/database/Db';
 
 
 
@@ -12,7 +12,7 @@ const Task = ({ moveTask, stopMoving, styleChoice, xy, task, i }) => {
 
 
     const list = task.List === 'todo' ? 0 
-            : task.List === 'inProgress' ? 1 
+            : task.List === 'inprogress' ? 1 
             : task.List === 'done' ? 2 
             : task.List === 'hold' ? 3 
             : -1
@@ -22,7 +22,7 @@ const Task = ({ moveTask, stopMoving, styleChoice, xy, task, i }) => {
             className="Task"
             style={{width:styleChoice&&'200px', position:styleChoice?'fixed':'static',top:xy.y,left:xy.x}}
             onMouseDown={() => { setMoving( true);moveTask( list, i)}}
-            onMouseUp={(e) => { console.log("shiiit");if (moving===false) return;stopMoving(e);setMoving( false)}}
+            onMouseUp={(e) => { if (moving===false) return;stopMoving(e);setMoving( false)}}
         >
             <div className="TaskColor"></div>
             <div className="TaskBody">
@@ -62,7 +62,7 @@ const AddTaskComp = ({ show, close, listId, addTask}) => {
     }
 
 
-    const list = listId===0?'todo':listId===1?'inProgress':listId===2?'done':listId===3?'hold':''
+    const list = listId===0?'todo':listId===1?'inprogress':listId===2?'done':listId===3?'hold':''
 
 
 
@@ -85,6 +85,7 @@ const AddTaskComp = ({ show, close, listId, addTask}) => {
                             type="number"
                             value={For}
                             onChange={ (e) => setFor( e.target.value)}
+                            min={1}
                         />
                     </div>
 
@@ -109,7 +110,7 @@ const Tasks = ({Return}) => {
 
     const [ data, setData] = useState({
         todo: [],
-        inProgress: [],
+        inprogress: [],
         done: [],
         hold: [],
     })
@@ -118,7 +119,7 @@ const Tasks = ({Return}) => {
 
         let newData = {
             todo: [],
-            inProgress: [],
+            inprogress: [],
             done: [],
             hold: [],
         }
@@ -130,8 +131,8 @@ const Tasks = ({Return}) => {
                         case "todo":
                             newData.todo.push( task)
                             break;
-                        case "inProgress":
-                            newData.inProgress.push( task)
+                        case "inprogress":
+                            newData.inprogress.push( task)
                             break;
                         case "done":
                             newData.done.push( task)
@@ -144,7 +145,7 @@ const Tasks = ({Return}) => {
 
                 setData( newData)
             }
-        )
+        ).catch( (e) => console.log( e))
 
     }, [])
     
@@ -185,10 +186,10 @@ const Tasks = ({Return}) => {
                 }))
                 return t
             case 1:
-                const t1 = data.inProgress[dragged.j]
+                const t1 = data.inprogress[dragged.j]
                 setData( prev => ({
                     ...prev,
-                    inProgress: prev.inProgress.filter( ( _, j) => j !== dragged.j ), 
+                    inprogress: prev.inprogress.filter( ( _, j) => j !== dragged.j ), 
                 }))
                 return t1
             case 2:
@@ -213,44 +214,67 @@ const Tasks = ({Return}) => {
     // when the user drops the task
     function stopMoving( e) {
 
-        console.log( "shit")
         e.stopPropagation()
 
+        const del = document.querySelector('.TasksDeleteArea').getBoundingClientRect();
+        
+        if (
+            e.clientX >= del.left &&
+            e.clientX <= del.right &&
+            e.clientY >= del.top &&
+            e.clientY <= del.bottom
+        ){
+            
+            const t = getTask()
 
-        // check if it's going to get deleted
+            // delete the task 
+            RemoveTask( t.Id).catch( (e)=>console.log("Tasks: ", e))
+        }else {
+            // check if it's going to get deleted
 
-        const lists = document.querySelectorAll('.listBody')
+            const lists = document.querySelectorAll('.listBody')
 
 
-        for( let i=0; i<4; i++) {
+            for( let i=0; i<4; i++) {
 
-            const listRect = lists[i].getBoundingClientRect();
+                const listRect = lists[i].getBoundingClientRect();
 
-            if (
-                e.clientX >= listRect.left &&
-                e.clientX <= listRect.right &&
-                e.clientY >= listRect.top &&
-                e.clientY <= listRect.bottom
-            ){
+                if (
+                    e.clientX >= listRect.left &&
+                    e.clientX <= listRect.right &&
+                    e.clientY >= listRect.top &&
+                    e.clientY <= listRect.bottom
+                ){
 
-                const destination = i===0?'todo':i===1?'inProgress':i===2?'done':i===3?'hold':''
-                const t = getTask()
-                UpdateTaskList( t.Id, destination).then(
-                    ( res) => {
-                        if (res !== null) {console.log( res);return;} 
+                    const destination = i===0?'todo':i===1?'inprogress':i===2?'done':i===3?'hold':''
+                    const t = getTask()
+
+                    // just move it to the top
+                    if (i==dragged.i) {
                         t.List = destination
                         setData( prev => ({
                             ...prev,
                             [destination]: [ t, ...prev[destination]],
                         }))
+                        break
                     }
-                )
 
-                // break from the loop
-                break;
+                    UpdateTaskList( t.Id, destination).then(
+                        ( res) => {
+                            if (res !== null) {console.log( res);return;} 
+                            t.List = destination
+                            setData( prev => ({
+                                ...prev,
+                                [destination]: [ t, ...prev[destination]],
+                            }))
+                        }
+                    )
+
+                    // break from the loop
+                    break;
+                }
             }
         }
-
 
         document.removeEventListener('mousemove', handleMouse)
         setDragged({s: false, i: 0, j: 0})
@@ -258,11 +282,12 @@ const Tasks = ({Return}) => {
     }
 
 
+    // TODO: add a way to calculate hours for every list
 
-    const [ addTask, setAddTask] = useState(false)
+    const [ addTask, setAddTask] = useState({show: false, listId: 0})
 
     function closeAddTask() {
-        setAddTask( false)
+        setAddTask( prev => ({ show: false, listId: 0}))
     }
 
     function addTaskFunc( list, title, body, For) {
@@ -278,14 +303,14 @@ const Tasks = ({Return}) => {
                     case "todo":
                         newData.todo = [ res, ...newData.todo]
                         break;
-                    case "inProgress":
-                        newData.todo = [ res, ...newData.todo]
+                    case "inprogress":
+                        newData.inprogress = [ res, ...newData.inprogress]
                         break;
                     case "done":
-                        newData.todo = [ res, ...newData.todo]
+                        newData.done = [ res, ...newData.done]
                         break;
                     case "hold":
-                        newData.todo = [ res, ...newData.todo]
+                        newData.hold = [ res, ...newData.hold]
                         break;
                 }
                 return newData;
@@ -303,9 +328,9 @@ const Tasks = ({Return}) => {
                 <i className='bx bxs-trash'></i>
             </div>
             <AddTaskComp
-                show={addTask}
+                show={addTask.show}
                 close={closeAddTask}
-                listId={dragged.i}
+                listId={addTask.listId}
                 addTask={addTaskFunc}
             />
             <div className="tasksHeader">
@@ -318,10 +343,10 @@ const Tasks = ({Return}) => {
                 <div className="list">
                     <div className="listHeader">
                         <h5>TODO</h5>
-                        <i className='bx bx-plus' onClick={()=> setAddTask(true)}></i>
+                        <i className='bx bx-plus' onClick={()=> setAddTask( prev => ({ show: true, listId: 0}))}></i>
                     </div>
                     <div className="listData">
-                        <p>{data.todo.length}</p> <p>6h</p>
+                        <p>{data.todo.length}</p> <p></p>
                     </div>
                     <div className="listBody">
                         {
@@ -346,14 +371,14 @@ const Tasks = ({Return}) => {
                 <div className="list">
                     <div className="listHeader">
                         <h5>IN PROGRESS</h5>
-                        <i className='bx bx-plus' onClick={()=> setAddTask(true)}></i>
+                        <i className='bx bx-plus' onClick={()=> setAddTask( prev => ({ show: true, listId: 1}))}></i>
                     </div>
                     <div className="listData">
-                        <p>{data.inProgress.length}</p> <p>6h</p>
+                        <p>{data.inprogress.length}</p> <p>6h</p>
                     </div>
                     <div className="listBody">
                         {
-                                data.inProgress.map( ( t, i) => {
+                                data.inprogress.map( ( t, i) => {
                                     const styleChoice = dragged.s && dragged.i == 1 && dragged.j == i
                                     return (
                                         <Task
@@ -374,7 +399,7 @@ const Tasks = ({Return}) => {
                 <div className="list">
                     <div className="listHeader">
                         <h5>DONE</h5>
-                        <i className='bx bx-plus' onClick={()=> setAddTask(true)}></i>
+                        <i className='bx bx-plus' onClick={()=> setAddTask( prev => ({ show: true, listId: 2}))}></i>
                     </div>
                     <div className="listData">
                         <p>{data.done.length}</p> <p>6h</p>
@@ -402,7 +427,7 @@ const Tasks = ({Return}) => {
                 <div className="list">
                     <div className="listHeader">
                         <h5>HOLD</h5>
-                        <i className='bx bx-plus' onClick={()=> setAddTask(true)}></i>
+                        <i className='bx bx-plus' onClick={()=> setAddTask( prev => ({ show: true, listId: 3}))}></i>
                     </div>
                     <div className="listData">
                         <p>{data.hold.length}</p> <p>6h</p>

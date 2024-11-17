@@ -4,7 +4,13 @@ import {database} from '../models';
 
 export function AddTask(arg1:string,arg2:string,arg3:number,arg4:string):Promise<database.Task>;
 
+export function GetDaysStatistics(arg1:number):Promise<Array<database.DayStatistics>>;
+
+export function GetStatistics():Promise<database.Statistics>;
+
 export function GetTasks():Promise<Array<database.Task>>;
+
+export function GetWeekStatistics(arg1:number):Promise<database.WeekStatistic>;
 
 export function RemoveTask(arg1:number):Promise<void>;
 
