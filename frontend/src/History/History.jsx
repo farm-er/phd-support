@@ -1,19 +1,23 @@
 import { useEffect, useState } from 'react';
 import './History.css'
 
+import { GetHistory, GetActivities } from '../../wailsjs/go/database/Db'
 
 
 const HistoryAct = ( {activity}) => {
     return (
         <div className="HistoryAct">
             <div className="actTitle">
-                {activity.title}
-            </div>
-            <div className="actDuration">
-                {activity.duration}
+                {activity.Title}
             </div>
             <div className="actCat">
-                {activity.category}
+                {activity.Type}
+            </div>
+            <div className="actTime">
+                {activity.Time}
+            </div>
+            <div className="actDuration">
+                {activity.Duration} h
             </div>
         </div>
     );
@@ -22,70 +26,38 @@ const HistoryAct = ( {activity}) => {
 
 const History = () => {
 
-    const data = [
-        {
-            time: "11-10-2024",
-            duration: 2.5,
-            activities: [
-                {
-                    category: "reading",
-                    duration: 1,
-                    title: "La psychologie des foules",
-                    link: ""
-                },
-                {
-                    category: "reading",
-                    duration: 1,
-                    title: "La psychologie des foules",
-                    link: ""
-                },
-                {
-                    category: "writing",
-                    duration: 1,
-                    title: "La psychologie des foules",
-                    link: ""
-                },
-                {
-                    category: "writing",
-                    duration: 1,
-                    title: "La psychologie des foules",
-                    link: ""
-                },
-            ]
-        },
-        {
-            time: "12-10-2024",
-            duration: 2.5,
-            activities: [
-                {
-                    category: "reading",
-                    duration: 1,
-                    title: "La psychologie des foules",
-                    link: ""
-                },
-                {
-                    category: "reading",
-                    duration: 1,
-                    title: "La psychologie des foules",
-                    link: ""
-                },
-                {
-                    category: "watching",
-                    duration: 1,
-                    title: "La psychologie des foules",
-                    link: ""
-                },
-                {
-                    category: "watching",
-                    duration: 1,
-                    title: "La psychologie des foules",
-                    link: ""
-                },
-            ]
-        }
-    ]
+    const [ data, setData] = useState([])
 
+    useEffect( () => {
 
+        GetHistory().then(
+            (res) => {
+                
+                let newData = []
+
+                const fetchData = async () => {
+                    for (let i=0; i<res.length; i++) {
+                        try {
+                            const activities = await GetActivities( res[i].Id)
+    
+                            newData.push( {id: res[i].Id, day: res[i].Day, activities: activities})
+                        } catch(e) {
+                            console.log(e)
+                        }finally {
+                            setData(newData)
+                        }
+                        
+                    }
+                } 
+
+                fetchData();
+                
+            }
+        ).catch( (e) => console.log("history: ", e))
+
+        
+
+    }, [])
 
     const [ search, setSearch] = useState('')
 
@@ -97,54 +69,30 @@ const History = () => {
 
     useEffect( () => {
 
-        if ( filter === "") {
-            setFilteredData( data)
-        }else {
-            setFilteredData( prev => {
-                return data.map( ( day) => {
-                    return {
-                        ...day,
-                        activities: day.activities.filter( ( act) => act.category === filter)
-                    }
-                })
-            })
+        let filtered = [ ...data]
+
+        if (filter) {
+            filtered = filtered.map(( day) => ({
+                ...day,
+                activities: day.activities.filter( ( act) => 
+                    act.Type === filter
+                ),
+            }));
         }
 
-        setFilteredData( prev => {
-            return prev.map( ( day) => {
-                return {
-                    ...day,
-                    activities: day.activities.filter( ( act) => act.title.toLowerCase().includes( search.toLowerCase()) )
-                }
-            })
-        })
+        if (search) {
+            filtered = filtered.map((day) => ({
+                ...day,
+                activities: day.activities.filter((act) =>
+                    act.Title.toLowerCase().includes(search.toLowerCase())
+                ),
+            }));
+        }
 
-    }, [ filter])
+        setFilteredData( filtered)
 
+    }, [ search, filter, data])
 
-    useEffect( () => {
-
-        setFilteredData( prev => {
-            return data.map( ( day) => {
-                return {
-                    ...day,
-                    activities: day.activities.filter( ( act) => act.title.toLowerCase().includes( search.toLowerCase()) )
-                }
-            })
-        })
-
-        if ( filter === "") return
-
-        setFilteredData( prev => {
-            return prev.map( ( day) => {
-                return {
-                    ...day,
-                    activities: day.activities.filter( ( act) => act.category === filter)
-                }
-            })
-        })
-
-    }, [ search])
 
     return (
         <div className="History">
@@ -176,11 +124,18 @@ const History = () => {
                 {
                     filteredData.map( ( day, i) => {
                         if ( day.activities.length == 0) return
+                        
+                        let dayDuration = 0
+
+                        for (let i = 0; i<day.activities.length; i++) {
+                            dayDuration+=day.activities[i].Duration
+                        }
+
                         return (
                             <div className="HistoryDay" key={i}>
                                 <div className="DayInfo">
-                                    <h3>{day.time}</h3>
-                                    <h3>{day.duration} h</h3>
+                                    <h3>{day.day}</h3>
+                                    <h3>{dayDuration.toPrecision(2)} h</h3>
                                 </div>
                                 <div className="DayBody">
                                     {

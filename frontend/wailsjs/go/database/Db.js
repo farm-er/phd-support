@@ -6,8 +6,16 @@ export function AddTask(arg1, arg2, arg3, arg4) {
   return window['go']['database']['Db']['AddTask'](arg1, arg2, arg3, arg4);
 }
 
+export function GetActivities(arg1) {
+  return window['go']['database']['Db']['GetActivities'](arg1);
+}
+
 export function GetDaysStatistics(arg1) {
   return window['go']['database']['Db']['GetDaysStatistics'](arg1);
+}
+
+export function GetHistory() {
+  return window['go']['database']['Db']['GetHistory']();
 }
 
 export function GetStatistics() {

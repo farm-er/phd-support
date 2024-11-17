@@ -2,3 +2,24 @@
 2024/11/17 13:08:12 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
 2024/11/17 13:08:12 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
 2024/11/17 13:08:13 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
+2024/11/17 14:11:43 table WEEK_STATISTICS has no column named DAY
+2024/11/17 14:11:47 table WEEK_STATISTICS has no column named DAY
+2024/11/17 14:11:51 table WEEK_STATISTICS has no column named DAY
+2024/11/17 14:12:07 table WEEK_STATISTICS has no column named DAY
+2024/11/17 14:23:24 table WEEK_STATISTICS has no column named DAY
+2024/11/17 14:25:10 table WEEK_STATISTICS has no column named DAY
+2024/11/17 14:25:48 table WEEK_STATISTICS has no column named DAY
+2024/11/17 14:26:44 table HISTORY has no column named TIME
+2024/11/17 14:27:03 table HISTORY has no column named DURATION
+2024/11/17 14:31:04 Unsolicited response received on idle HTTP channel starting with "HTTP/1.1 400 Bad Request\r\n\r\n"; err=<nil>
+2024/11/17 14:51:01 near ")": syntax error
+2024/11/17 14:52:24 near ")": syntax error
+2024/11/17 14:52:41 table ACTIVITY has no column named DURATION
+2024/11/17 14:53:06 6 values for 5 columns
+2024/11/17 15:32:31 Unsolicited response received on idle HTTP channel starting with "HTTP/1.1 400 Bad Request\r\n\r\n"; err=<nil>
+2024/11/17 15:53:26 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
+2024/11/17 15:53:26 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
+2024/11/17 15:53:26 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
+2024/11/17 15:57:48 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
+2024/11/17 15:57:49 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
+2024/11/17 15:58:29 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
