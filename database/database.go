@@ -10,6 +10,8 @@ type Db struct {
 
 // TODO: create database.db file if it does not exist
 
+// TODO: make all operations at the start one transaction using db.begin()
+
 func NewDb() (*Db, error) {
 
 	db, r := sql.Open("sqlite3", "./database/database.db")
@@ -24,8 +26,8 @@ func NewDb() (*Db, error) {
 		return nil, r
 	}
 
+	// drop tables for debugging
 	_, r = db.Exec(`
-		PRAGMA journal_mode=WAL;
 		BEGIN TRANSACTION;
 
 			DROP TABLE IF EXISTS WEEK_STATISTICS;
@@ -34,6 +36,19 @@ func NewDb() (*Db, error) {
 			DROP TABLE IF EXISTS TASKS;
 			DROP TABLE IF EXISTS HISTORY_DAY;
 			DROP TABLE IF EXISTS ACTIVITY;
+			DROP TABLE IF EXISTS TOPIC;
+			DROP TABLE IF EXISTS FILE;
+		
+		COMMIT;
+	`)
+
+	if r != nil {
+		return nil, r
+	}
+
+	// this is the History data
+	_, r = db.Exec(`
+		BEGIN TRANSACTION;
 
 			CREATE TABLE IF NOT EXISTS HISTORY_DAY (
 				ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -49,6 +64,17 @@ func NewDb() (*Db, error) {
 				TYPE TEXT,
 				FOREIGN KEY (DAY) REFERENCES HISTORY_DAY( ID)
 			);
+		
+		COMMIT;
+	`)
+
+	if r != nil {
+		return nil, r
+	}
+
+	// this is the statistics data
+	_, r = db.Exec(`
+		BEGIN TRANSACTION;
 
 			CREATE TABLE IF NOT EXISTS WEEK_STATISTICS (
 				ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -70,6 +96,18 @@ func NewDb() (*Db, error) {
 				HOLD INTEGER,
 				FOREIGN KEY (WEEK_ID) REFERENCES WEEK_STATISTICS(ID)
 			);
+		
+		COMMIT;
+	`)
+
+	if r != nil {
+		return nil, r
+	}
+
+	// this is the tasks data
+	_, r = db.Exec(`
+		BEGIN TRANSACTION;
+
 			CREATE TABLE IF NOT EXISTS TASKS (
 				ID INTEGER PRIMARY KEY AUTOINCREMENT,
 				LIST TEXT,
@@ -78,6 +116,42 @@ func NewDb() (*Db, error) {
 				FOR TEXT,
 				BODY TEXT
 			);
+		
+		COMMIT;
+	`)
+
+	if r != nil {
+		return nil, r
+	}
+
+	// directories and files
+	_, r = db.Exec(`
+		BEGIN TRANSACTION;
+
+			CREATE TABLE IF NOT EXISTS TOPIC (
+				ID INTEGER PRIMARY KEY AUTOINCREMENT,
+				TITLE TEXT
+			);
+
+			CREATE TABLE IF NOT EXISTS FILE (
+				ID INTEGER PRIMARY KEY AUTOINCREMENT,
+				TOPIC INTEGER,
+				TITLE TEXT,
+				TYPE TEXT,
+				LAST_UPDATE TEXT,
+				FOREIGN KEY (TOPIC) REFERENCES TOPIC( ID)
+			);
+		
+		COMMIT;
+	`)
+
+	if r != nil {
+		return nil, r
+	}
+
+	// this is for the triggers to update statistics based on tasks changes
+	_, r = db.Exec(`
+		BEGIN TRANSACTION;
 
 			CREATE TRIGGER IF NOT EXISTS TASKS_UPDATE AFTER UPDATE ON TASKS
 			BEGIN
@@ -150,6 +224,26 @@ func NewDb() (*Db, error) {
 						ELSE HOLD
 						END;
 			END;
+		
+		COMMIT;
+	`)
+
+	if r != nil {
+		return nil, r
+	}
+
+	// dummy data for debugging
+	_, r = db.Exec(`
+		PRAGMA journal_mode=WAL;
+		BEGIN TRANSACTION;
+
+			INSERT INTO TOPIC ( TITLE) VALUES ( 'TOPIC1');
+			INSERT INTO TOPIC ( TITLE) VALUES ( 'TOPIC2');
+			INSERT INTO TOPIC ( TITLE) VALUES ( 'TOPIC3');
+
+			INSERT INTO FILE ( TOPIC, TITLE, TYPE, LAST_UPDATE) VALUES ( 1, 'FILE1', 'pdf', DATETIME('2024-12-25 19:00:00'));
+			INSERT INTO FILE ( TOPIC, TITLE, TYPE, LAST_UPDATE) VALUES ( 2, 'FILE1', 'pdf', DATETIME('2024-12-25 19:00:00'));
+			INSERT INTO FILE ( TOPIC, TITLE, TYPE, LAST_UPDATE) VALUES ( 3, 'FILE1', 'pdf', DATETIME('2024-12-25 19:00:00'));
 
 			INSERT INTO HISTORY_DAY ( DAY) VALUES ( '2024-12-25');
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './Tasks.css';
 
 import { GetTasks, AddTask, UpdateTaskList, RemoveTask } from '../../wailsjs/go/database/Db';
+import BackgroundQuit from '../components/BackgroundQuit/BackgroundQuit';
 
 
 
@@ -68,7 +69,13 @@ const AddTaskComp = ({ show, close, listId, addTask}) => {
 
     return (
         <>
-            <div className="bg" onClick={(e) => {e.stopPropagation(); clearFields();}} style={{display:show?'block':'none'}}></div>
+            {
+                show&&(
+                    <BackgroundQuit
+                        onClose={clearFields}
+                    />
+                )
+            }
             <div className="AddTask" style={{ width:show?'500px':'0', opacity:show?1:0}}>
 
                     <h4>Titre</h4>

@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"phd-support/database"
+	"phd-support/files"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -25,10 +26,18 @@ func main() {
 	}
 	log.SetOutput(file)
 
+	// initializing the database
 	db, r := database.NewDb()
 
 	if r != nil {
 		log.Fatal(r)
+	}
+
+	// initializing the files structure
+	r = files.SetupFileStructure()
+
+	if r != nil {
+		return
 	}
 
 	// Create an instance of the app structure

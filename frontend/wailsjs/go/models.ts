@@ -40,6 +40,26 @@ export namespace database {
 	        this.Prod = source["Prod"];
 	    }
 	}
+	export class File {
+	    Id: number;
+	    Topic: number;
+	    Title: string;
+	    Type: string;
+	    LastUpdate: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new File(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Id = source["Id"];
+	        this.Topic = source["Topic"];
+	        this.Title = source["Title"];
+	        this.Type = source["Type"];
+	        this.LastUpdate = source["LastUpdate"];
+	    }
+	}
 	export class HistoryDay {
 	    Id: number;
 	    Day: string;
@@ -94,6 +114,20 @@ export namespace database {
 	        this.Created = source["Created"];
 	        this.For = source["For"];
 	        this.Body = source["Body"];
+	    }
+	}
+	export class Topic {
+	    Id: number;
+	    Title: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Topic(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Id = source["Id"];
+	        this.Title = source["Title"];
 	    }
 	}
 	export class WeekStatistic {
