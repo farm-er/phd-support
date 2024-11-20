@@ -8,6 +8,10 @@ export function AddTask(arg1:string,arg2:string,arg3:number,arg4:string):Promise
 
 export function AddTopic(arg1:string):Promise<database.Topic>;
 
+export function DeleteFileFromTopic(arg1:string,arg2:string,arg3:string,arg4:number):Promise<void>;
+
+export function DeleteTopic(arg1:string,arg2:number):Promise<void>;
+
 export function GetActivities(arg1:number):Promise<Array<database.Activity>>;
 
 export function GetDaysStatistics(arg1:number):Promise<Array<database.DayStatistics>>;

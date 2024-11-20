@@ -26,3 +26,24 @@ func CreateTopic(topic string) error {
 
 	return nil
 }
+
+func DeleteTopic(topic string) error {
+
+	homeDir, r := os.UserHomeDir()
+
+	if r != nil {
+		log.Println("DeleteTopic: ", r.Error())
+		return r
+	}
+
+	topicDir := filepath.Join(homeDir, DOCUMENTS, MAIN, TOPICS, topic)
+
+	r = os.RemoveAll(topicDir)
+
+	if r != nil {
+		log.Println("DeleteTopic: ", r.Error())
+		return r
+	}
+
+	return nil
+}

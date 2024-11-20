@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import './Library.css'
 
-import { GetTopics, GetTopicFiles, AddTopic, AddFileToTopic } from '../../wailsjs/go/database/Db'
+import { GetTopics, GetTopicFiles, AddTopic, DeleteTopic, AddFileToTopic, DeleteFileFromTopic } from '../../wailsjs/go/database/Db'
 import BackgroundQuit from '../components/BackgroundQuit/BackgroundQuit';
 
 
@@ -45,7 +45,7 @@ const AddFileForm =  ({ close, addFile}) => {
 
     const [ title, setTitle] = useState('')
 
-    const [ type, setType] = useState('')
+    const [ type, setType] = useState('pdf')
 
 
     return(
@@ -134,8 +134,23 @@ const Library = () => {
             (res) => {
                 res.files = []
                 setTopics( prev => [ res, ...prev])
+                setSelected( 0)
             }
         )
+
+    }
+
+    const deleteTopicFunc = ( topicName, topicId, topicIndex) => {
+
+        DeleteTopic( topicName, topicId).then(
+            () => {
+                setTopics( prev => {
+                    const t = [...prev]
+
+                    return t.filter( (_, i) => i !== topicIndex)
+                })
+            }
+        ).catch( (e) => console.log(e))
 
     }
 
@@ -157,14 +172,27 @@ const Library = () => {
         AddFileToTopic( topics[selected].Id, title, type).then(
             (file) => {
 
-                console.log("i ran")
-                console.log(file)
+                // BUG: MADE BY SOHAIB
+
+                // const topicsCopy = [...topics]
+
+                // var selectedTopic = topicsCopy[selected]
+            
+                // selectedTopic.files.push(file)
+
+                // setTopics(topicsCopy)
+
                 setTopics( prev => {
                     const topicsCopy = [...prev]
 
-                    const selectedTopic = topicsCopy[selected]
+                    let selectedTopic = topicsCopy[selected]
                 
-                    selectedTopic.files = [...selectedTopic.files, file]
+                    selectedTopic = {
+                        ...selectedTopic,
+                        files:  [ file, ...selectedTopic.files],
+                    }
+
+                    topicsCopy[selected] = selectedTopic
 
                     return topicsCopy
                 })
@@ -172,7 +200,30 @@ const Library = () => {
         ).catch( (e) => console.log(e))
     }
 
-    // TODO: add file functionality
+
+    const deleteFileFunc = ( fileName, fileType, fileId, fileIndex) => {
+
+        DeleteFileFromTopic(  topics[selected].Title, fileName, fileType, fileId).then(
+            () => {
+                setTopics( prev => {
+                    const topicsCopy = [...prev]
+
+                    let selectedTopic = topicsCopy[selected]
+                
+                    selectedTopic = {
+                        ...selectedTopic,
+                        files:  selectedTopic.files.filter( (_, i) => i !== fileIndex) ,
+                    }
+
+                    topicsCopy[selected] = selectedTopic
+
+                    return topicsCopy
+                })
+            }
+        ).catch( (e) => console.log(e))
+
+    }
+
 
     return (
         <div className="Library">
@@ -219,11 +270,20 @@ const Library = () => {
                             close={closeAddFile}
                             addFile={addFileFunc}
                         />
-                    ):(
+                    ):selected!==null&&(
                         <button
                             onClick={openAddFile}
                         >
                             Add file
+                        </button>
+                    )
+                }
+                {
+                    selected!==null&&(
+                        <button
+                            onClick={ () => deleteTopicFunc( topics[selected].Title, topics[selected].Id, selected)}
+                        >
+                            delete Topic
                         </button>
                     )
                 }
@@ -238,7 +298,8 @@ const Library = () => {
                         ):(
                             topics[selected].files.map( ( f, i) => {
 
-                                if (search) {
+
+                                if (search !== "") {
                                     if ( f.Title.toLowerCase().includes( search)) {
                                         return(
                                             <div className="File"
@@ -250,6 +311,8 @@ const Library = () => {
                                                             <i className='bx bxs-file-txt'></i>
                                                         ):f.Type === 'pdf'?(
                                                             <i className='bx bxs-file-pdf'></i>
+                                                        ):f.Type === 'doc' || f.Type === 'docx'?(
+                                                            <i className='bx bxs-file-doc'></i>
                                                         ):(
                                                             <></>
                                                         )
@@ -258,6 +321,9 @@ const Library = () => {
                                                 </div>
                                                 <div className="fileMetadata">
                                                     <h5>{f.LastUpdate}</h5>
+                                                </div>
+                                                <div className="fileDelete">
+                                                    <i class='bx bx-trash' ></i>
                                                 </div>
                                             </div>
                                         )
@@ -276,6 +342,8 @@ const Library = () => {
                                                     <i className='bx bxs-file-txt'></i>
                                                 ):f.Type === 'pdf'?(
                                                     <i className='bx bxs-file-pdf'></i>
+                                                ):f.Type === 'doc' || f.Type === 'docx'?(
+                                                    <i className='bx bxs-file-doc'></i>
                                                 ):(
                                                     <></>
                                                 )
@@ -284,6 +352,11 @@ const Library = () => {
                                         </div>
                                         <div className="fileMetadata">
                                             <h5>{f.LastUpdate}</h5>
+                                        </div>
+                                        <div className="fileDelete"
+                                            onClick={() => deleteFileFunc( f.Title, f.Type, f.Id, i)}
+                                        >
+                                            <i className='bx bx-trash' ></i>
                                         </div>
                                     </div>
                                 )

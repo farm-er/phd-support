@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 )
 
-func CreateFile(topic string, fileName string, ext string) error {
+func CreateFile(topic, fileName, ext string) error {
 
 	homeDir, r := os.UserHomeDir()
 
@@ -16,7 +16,7 @@ func CreateFile(topic string, fileName string, ext string) error {
 		return r
 	}
 
-	filePath := filepath.Join(homeDir, DOCUMENTS, MAIN, TOPICS, topic, fileName)
+	filePath := filepath.Join(homeDir, DOCUMENTS, MAIN, TOPICS, topic, fileName+"."+ext)
 
 	// check if the file exists
 	if _, err := os.Stat(filePath); err == nil {
@@ -34,4 +34,25 @@ func CreateFile(topic string, fileName string, ext string) error {
 
 	return nil
 
+}
+
+func DeleteFile(topic, fileName, ext string) error {
+
+	homeDir, r := os.UserHomeDir()
+
+	if r != nil {
+		log.Println("DeleteFile: ", r.Error())
+		return r
+	}
+
+	filePath := filepath.Join(homeDir, DOCUMENTS, MAIN, TOPICS, topic, fileName+"."+ext)
+
+	r = os.Remove(filePath)
+
+	if r != nil {
+		log.Println("DeleteFile: ", r.Error())
+		return r
+	}
+
+	return nil
 }

@@ -72,6 +72,25 @@ func (d *Db) AddTopic(title string) (Topic, error) {
 
 }
 
+func (d *Db) DeleteTopic(topicName string, topicId int64) error {
+
+	_, r := d.Db.Exec("DELETE FROM TOPIC WHERE ID = ?;", topicId)
+
+	if r != nil {
+		return r
+	}
+
+	// delete it from the file system
+
+	r = files.DeleteTopic(topicName)
+
+	if r != nil {
+		return r
+	}
+
+	return nil
+}
+
 type File struct {
 	Id         int64
 	Topic      int64
@@ -153,4 +172,23 @@ func (d *Db) AddFileToTopic(topicId int64, fileName string, ext string) (File, e
 
 	return file, nil
 
+}
+
+func (d *Db) DeleteFileFromTopic(topic, fileName, fileType string, fileId int64) error {
+
+	_, r := d.Db.Exec("DELETE FROM FILE WHERE ID = ?;", fileId)
+
+	if r != nil {
+		return r
+	}
+
+	// delete it from the file system
+
+	r = files.DeleteFile(topic, fileName, fileType)
+
+	if r != nil {
+		return r
+	}
+
+	return nil
 }
