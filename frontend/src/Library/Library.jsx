@@ -4,6 +4,7 @@ import './Library.css'
 
 import { GetTopics, GetTopicFiles, AddTopic, DeleteTopic, AddFileToTopic, DeleteFileFromTopic } from '../../wailsjs/go/database/Db'
 import BackgroundQuit from '../components/BackgroundQuit/BackgroundQuit';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -89,6 +90,8 @@ const AddFileForm =  ({ close, addFile}) => {
 
 
 const Library = () => {
+
+    const navigate = useNavigate()
 
     const [ topics, setTopics] = useState([])
 
@@ -322,8 +325,10 @@ const Library = () => {
                                                 <div className="fileMetadata">
                                                     <h5>{f.LastUpdate}</h5>
                                                 </div>
-                                                <div className="fileDelete">
-                                                    <i class='bx bx-trash' ></i>
+                                                <div className="fileDelete"
+                                                    onClick={() => deleteFileFunc( f.Title, f.Type, f.Id, i)}
+                                                >
+                                                    <i className='bx bx-trash' ></i>
                                                 </div>
                                             </div>
                                         )
@@ -335,6 +340,7 @@ const Library = () => {
                                 return(
                                     <div className="File"
                                         key={i}
+                                        onClick={() => navigate('/videoplayer')}
                                     >
                                         <div className="fileName">
                                             {

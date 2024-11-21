@@ -4,8 +4,11 @@
 
 .Dashboard
 {
-    box-sizing: border-box;
-    grid-area: main;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: calc( 100vw - 50px );
+    height: 100vh;
     display: grid;
     grid-template-columns: 300px 1fr;
     grid-template-rows: 40% auto;
@@ -16,6 +19,7 @@
     gap: 0.5rem;
     padding: 0.5rem;
     background-color: var(--bg-color);
+    font-family: 'FunnelDisplay', sans-serif;
 }
 
 .Dashboard > div

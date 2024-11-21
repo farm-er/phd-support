@@ -1,0 +1,48 @@
+
+
+
+.VideoPlayer
+{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background-color: var(--bg-color);
+}
+
+
+
+.VideoPlayer .VideoNote
+{
+    height: 100%;
+    width: 30%;
+    min-width: 10%;
+    max-width: 80%;
+    resize: horizontal;
+    overflow: auto;
+    border-right: 1px solid black;
+    padding: 20px;
+}
+
+
+.VideoPlayer .VideoSection
+{
+    height: 100%;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    padding: 20px;
+}
+
+
+.VideoPlayer .VideoSection iframe
+{
+    width: 90%;
+    aspect-ratio: 16/9;
+}
+
+
+
+

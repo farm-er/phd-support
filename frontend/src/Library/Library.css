@@ -3,7 +3,11 @@
 
 .Library
 {
-    grid-area: main;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: calc( 100vw - 50px );
+    height: 100vh;
     display: grid;
     grid-template-columns: 300px auto;
     grid-template-rows: 200px auto;

@@ -10,12 +10,6 @@
     width: 100vw;
     height: 100vh;
     background-color: var(--bg-color);
-    display: grid;
-    grid-template-columns: 60px 1fr;
-    grid-template-rows: 100vh;
-    grid-template-areas: 
-        "aside main"
-    ;
     transition: all 0.3s ease;
 }
 
@@ -30,23 +24,31 @@
     text-decoration: none;
 }
 
-#App.open
-{
-    grid-template-columns: 200px 1fr;
-}
 
-#App.open .aside span
-{
-    opacity: 1;
-    visibility: visible;
-}
 
 
 .aside
 {
-    position: relative;
+    z-index: 10;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 50px;
+    height: 100vh;
     grid-area: aside;
     background-color: var(--nav-color);
+    transition: all 0.3s ease;
+}
+
+.aside.open
+{
+    width: 200px;
+}
+
+.aside.open  span
+{
+    opacity: 1;
+    visibility: visible;
 }
 
 .aside nav
@@ -83,6 +85,19 @@
     color: var(--nav-color);
 }
 
+.aside li img
+{
+    filter: grayscale(100%) brightness(500%);
+    width: 20px;
+}
+
+.aside li.active img,
+.aside li:hover img
+{
+    filter: none;
+}
+
+
 .aside li:hover
 {
     background-color: #fff;
@@ -97,20 +112,36 @@
 
 .aside .bt-aside
 {
-    width: 30px;
-    height: 30px;
+
     position: absolute;
-    right: 0;
-    top: 10%;
+    right: 5px;
+    top: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    background-color: var(--nav-color);
+    border-radius: 5px;
+    border: 0;
+    padding: 7px 2px;
+    transition: all 0.3s ease;
 }
 
-#App.open .aside .bt-aside i
+.aside.open .bt-aside img
 {
     transform: rotate(180deg);
+    filter: grayscale(100%) brightness(500%);
+}
+
+.aside .bt-aside img
+{
+    filter: grayscale(100%) brightness(500%);
+    width: 30px;
+    
+}
+
+.aside.open .bt-aside{
+    right: -25px;
 }
 
 

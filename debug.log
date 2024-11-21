@@ -18,3 +18,13 @@
 2024/11/20 20:20:57 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
 2024/11/20 20:31:59 Unsolicited response received on idle HTTP channel starting with "HTTP/1.1 400 Bad Request\r\n\r\n"; err=<nil>
 2024/11/20 20:48:16 DeleteFile:  remove /home/apollo/Documents/phd_support/topics/TOPIC3/FILE1.pdf: no such file or directory
+2024/11/21 09:40:56 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
+2024/11/21 09:40:58 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
+2024/11/21 09:43:40 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
+2024/11/21 09:43:41 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
+2024/11/21 16:55:00 Unsolicited response received on idle HTTP channel starting with "HTTP/1.1 400 Bad Request\r\n\r\n"; err=<nil>
+2024/11/21 17:08:35 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
+2024/11/21 17:08:36 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
+2024/11/21 17:09:32 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
+2024/11/21 20:42:13 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
+2024/11/21 20:42:14 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error

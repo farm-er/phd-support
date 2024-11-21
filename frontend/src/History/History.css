@@ -1,7 +1,11 @@
 
 .History
 {
-    grid-area: main;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: calc( 100vw - 50px );
+    height: 100vh;
     display: flex;
     flex-flow: column;
 }

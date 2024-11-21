@@ -5,9 +5,13 @@ import Workshop from './Workshop/Workshop';
 import History from './History/History';
 import Tasks from './Tasks/Tasks';
 import Library from './Library/Library';
+import BackgroundQuit from './components/BackgroundQuit/BackgroundQuit';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import VideoPlayer from './VideoPlayer/VideoPlayer';
 
-function App() {
 
+
+const MainLayout = () => {
 
     const [index, setIndex] = useState(0)
 
@@ -27,31 +31,45 @@ function App() {
         setIndex(0)
     }
 
+    function toggleAside() {
+        document.querySelector('.aside').classList.toggle('open')
+        setShow( prev => !prev)
+    }
+
     useEffect( () => {
 
     }, [])
 
+    const [ show, setShow] = useState( false)
+
     return (
         <div id="App">
+            {
+                show&&(
+                    <BackgroundQuit
+                        onClose={toggleAside}
+                    />
+                )
+            }
             <div className="aside">
-                <button className="bt-aside" onClick={ (e) => { e.preventDefault(); document.querySelector('#App').classList.toggle('open')}}><i className='bx bx-chevrons-right'></i></button>
+                <button className="bt-aside" onClick={toggleAside}><img src="src/assets/icons/expand.svg" alt="" /></button>
 
                 <nav>
                     <ul>
                         <li onClick={(e) => setIndex(0)} className={index===0?'active':undefined}>
-                            <i className='bx bx-tachometer'></i>
+                            <img src="src/assets/icons/dashboard.svg" alt="" /> 
                             <span>Aperçu</span>
                         </li>
                         <li onClick={(e) => setIndex(1)} className={index===1?'active':undefined}>
-                            <i className='bx bxs-file-doc'></i>
+                            <img src="src/assets/icons/dashboard.svg" alt="" />
                             <span>Production</span>
                         </li>
                         <li onClick={(e) => setIndex(4)} className={index===4?'active':undefined}>
-                            <i className='bx bx-library'></i>
+                            <img src="src/assets/icons/library.svg" alt="" />
                             <span>Bibliotheque</span>
                         </li>
                         <li onClick={(e) => setIndex(2)} className={index===2?'active':undefined}>
-                            <i className='bx bx-history'></i>
+                        <img src="src/assets/icons/history.svg" alt="" />
                             <span>Historique</span>
                         </li>
                         
@@ -63,6 +81,30 @@ function App() {
             {(content[index])}
 
         </div>
+    );
+
+}
+
+
+
+
+function App() {
+
+
+    
+
+    return (
+
+        <BrowserRouter>
+            <Routes>
+
+                <Route  path='/' element={<MainLayout/>} />
+
+                <Route  path='/videoplayer' element={<VideoPlayer/>} />
+
+            </Routes>
+        </BrowserRouter>
+
     )
 }
 

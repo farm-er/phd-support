@@ -14,12 +14,20 @@ export function AddTopic(arg1) {
   return window['go']['database']['Db']['AddTopic'](arg1);
 }
 
+export function AddVideo(arg1, arg2, arg3) {
+  return window['go']['database']['Db']['AddVideo'](arg1, arg2, arg3);
+}
+
 export function DeleteFileFromTopic(arg1, arg2, arg3, arg4) {
   return window['go']['database']['Db']['DeleteFileFromTopic'](arg1, arg2, arg3, arg4);
 }
 
 export function DeleteTopic(arg1, arg2) {
   return window['go']['database']['Db']['DeleteTopic'](arg1, arg2);
+}
+
+export function DeleteVideo(arg1) {
+  return window['go']['database']['Db']['DeleteVideo'](arg1);
 }
 
 export function GetActivities(arg1) {

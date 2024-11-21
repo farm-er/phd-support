@@ -130,6 +130,24 @@ export namespace database {
 	        this.Title = source["Title"];
 	    }
 	}
+	export class Video {
+	    Topic: number;
+	    Id: number;
+	    Title: string;
+	    Link: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Video(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Topic = source["Topic"];
+	        this.Id = source["Id"];
+	        this.Title = source["Title"];
+	        this.Link = source["Link"];
+	    }
+	}
 	export class WeekStatistic {
 	    Id: number;
 	    Cons: number;
