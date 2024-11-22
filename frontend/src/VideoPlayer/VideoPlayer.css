@@ -7,8 +7,10 @@
     height: 100vh;
     display: flex;
     align-items: center;
+    gap: 10px;
+    padding: 10px;
     overflow: hidden;
-    background-color: var(--bg-color);
+    background-color: #404040;
 }
 
 
@@ -16,13 +18,53 @@
 .VideoPlayer .VideoNote
 {
     height: 100%;
-    width: 30%;
+    width: 50%;
     min-width: 10%;
     max-width: 80%;
     resize: horizontal;
     overflow: auto;
-    border-right: 1px solid black;
-    padding: 20px;
+    background-color: #202020;
+    padding: 10px;
+    border-radius: 5px;
+    color: #fff;
+    display: flex;
+    gap: 10px;
+}
+
+.VideoPlayer .VideoNote .VideoEditorWrapper
+{
+    height: 100%;
+    flex-grow: 1;
+}
+
+.VideoPlayer .VideoNote .VideoNoteToolbar
+{
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+}
+
+.VideoPlayer .VideoNote .VideoNoteToolbar > *
+{
+    background-color: #202020;
+    border: 1px solid #404040;
+    aspect-ratio: 1;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.VideoPlayer .VideoNote .VideoNoteToolbar > *.clicked
+{
+    background-color: #404040;
+}
+
+/* this is to change the style of the editor component */
+.VideoPlayer .VideoNote .DraftEditor-editorContainer {
+    border:1px solid #404040;
+    border-radius: 5px;
+    padding: 15px;
 }
 
 
@@ -31,18 +73,31 @@
     height: 100%;
     flex-grow: 1;
     display: flex;
-    justify-content: center;
+    flex-flow: column;
     align-items: start;
+    justify-content: start;
+    gap: 20px;
     padding: 20px;
+    background-color: #202020;
+    border-radius: 5px;
 }
 
 
 .VideoPlayer .VideoSection iframe
 {
-    width: 90%;
+    width: 100%;
     aspect-ratio: 16/9;
+    border: 5px solid #404040;
+    border-radius: 10px;
 }
 
 
+.VideoPlayer .VideoSection .VideoTitle
+{
+    font-size: 28px;
+    color: #fff;
+    font-weight: 700;
+    margin-left: 20px;
+}
 
 
