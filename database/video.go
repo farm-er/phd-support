@@ -1,12 +1,44 @@
 package database
 
-import "strings"
+import (
+	"log"
+	"strings"
+)
 
 type Video struct {
 	Topic int64
 	Id    int64
 	Title string
 	Link  string
+}
+
+func (d *Db) GetTopicVideos(topicId int64) ([]Video, error) {
+
+	rows, r := d.Db.Query("SELECT * FROM VIDEO WHERE TOPIC = ?;", topicId)
+
+	if r != nil {
+		log.Println("GetTopicVideos: ", r.Error())
+		return nil, r
+	}
+
+	var videos []Video
+
+	for rows.Next() {
+
+		var video Video
+
+		r = rows.Scan(&video.Topic, &video.Id, &video.Title, &video.Link)
+
+		if r != nil {
+			log.Println("GetTopicVideos: ", r.Error())
+			return nil, r
+		}
+
+		videos = append(videos, video)
+	}
+
+	return videos, nil
+
 }
 
 // https://youtu.be/RxHJdapz2p0

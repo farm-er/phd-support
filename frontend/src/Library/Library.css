@@ -10,7 +10,7 @@
     height: 100vh;
     display: grid;
     grid-template-columns: 300px auto;
-    grid-template-rows: 200px auto;
+    grid-template-rows: 100px auto;
     grid-template-areas: 
         "header header"
         "topics body"
@@ -23,26 +23,38 @@
     display: flex;
     justify-content: center;
     align-items: end;
-    padding: 50px;
+    padding: 20px;
+    gap: 50px;
+    border-bottom: 1px solid #fff;
 }
 
 .LibraryHeader input
 {
-    width: 200px;
-    padding: 10px 15px;
+
+    width: 30%;
+    height: 50px;
+    padding: 10px 30px;
     border-radius: 10px;
+}
+
+.LibraryHeader .HeaderButtons
+{
+    height: 50px;
+    padding: 10px 30px;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .LibraryBody
 {
     grid-area: body;
-    border-top: 1px solid black;
-    border-left: 1px solid black;
     display: flex;
     flex-flow: column;
     overflow-y: scroll;
     gap: 10px;
-    padding: 20px;
+    padding: 30px 10px;
 }
 
 .LibraryBody .NoFiles
@@ -56,25 +68,36 @@
 
 .File
 {
-    border: 1px solid black;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px 10px;
+    gap: 100px;
+    padding: 5px 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.File:hover
+{
+    transform: scale(1.01);
 }
 
 .File .fileName
 {
     display: flex;
     align-items: center;
-    gap: 5px;
+    justify-content: start;
+    gap: 20px;
 }
 
-.File .fileName > i
+.File .fileName img
 {
-    font-size: 30px;
+    width: 50px;
 }
+
+
 
 .File .fileDelete
 {
@@ -99,28 +122,31 @@
     flex-flow: column;
     overflow-y: scroll;
     gap: 10px;
-    padding: 5px;
-    border-top: 1px solid black;
+    padding: 30px  0px 30px 10px;
+    border-right: 1px solid #fff;
 }
+
 
 .Topic
 {
     width: 100%;
-    padding: 10px;
-    border: 1px solid black;
+    padding: 20px 10px;
     cursor: pointer;
+    background-color: #fff;
+    border-radius: 5px 0px 0px 5px;
 }
 
-
-.AddTopic
+.LibraryTopics .AddTopic
 {
-    width: 100%;
+    background-color: #fff;
+    border-radius: 5px;
+    height: 50px;
     padding: 10px;
-    border: 1px solid black;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-right: 10px;
 }
 
 
@@ -135,17 +161,66 @@
 }
 
 
-.AddFilePage
+.AddFileForm
 {
     position: fixed;
     top: 10%;
     left: 25%;
-    height: 80%;
     width: 50%;
-    background-color: red;
-    border: 1px solid black;
+    background-color: var(--bg-color);
     border-radius: 10px;
     z-index: 100;
+    display: flex;
+    flex-flow: column;
+    gap: 50px;
+    padding: 50px 70px;
 }
 
 
+.AddFileForm > *
+{
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    gap: 30px;
+}
+
+.AddFileForm .FileFormTitle input
+{
+    width: 60%;
+    margin-left: 30px;
+}
+
+
+.AddFileForm .FileFormType select
+{
+    width: 100px;
+    padding: 10px 30px;
+    background-color: #fff;
+}
+
+.AddFileForm .FileFormLink input
+{
+    width: 60%;
+    margin-left: 30px;
+}
+
+.AddFileForm .FileFormAction
+{
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+}
+
+.AddFileForm .FileFormAction button
+{
+    width: 100px;
+    height: 50px;
+    padding: 10px 30px;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -38,6 +38,8 @@ func NewDb() (*Db, error) {
 			DROP TABLE IF EXISTS ACTIVITY;
 			DROP TABLE IF EXISTS TOPIC;
 			DROP TABLE IF EXISTS FILE;
+			DROP TABLE IF EXISTS VIDEO;
+			DROP TABLE IF EXISTS VIDEO_NOTE;
 		
 		COMMIT;
 	`)
@@ -151,6 +153,29 @@ func NewDb() (*Db, error) {
 		return nil, r
 	}
 
+	_, r = db.Exec(`
+		BEGIN TRANSACTION;
+
+			CREATE TABLE IF NOT EXISTS VIDEO (
+				TOPIC INTEGER,
+				ID INTEGER PRIMARY KEY AUTOINCREMENT,
+				TITLE TEXT,
+				LINK TEXT,
+				FOREIGN KEY (TOPIC) REFERENCES TOPIC(ID)
+			);
+			CREATE TABLE IF NOT EXISTS VIDEO_NOTE (
+				VIDEO INTEGER,
+				BODY TEXT,
+				FOREIGN KEY (VIDEO) REFERENCES VIDEO(ID)
+			);
+		
+		COMMIT;
+	`)
+
+	if r != nil {
+		return nil, r
+	}
+
 	// this is for the triggers to update statistics based on tasks changes
 	_, r = db.Exec(`
 		BEGIN TRANSACTION;
@@ -242,6 +267,9 @@ func NewDb() (*Db, error) {
 			INSERT INTO TOPIC ( TITLE) VALUES ( 'TOPIC1');
 			INSERT INTO TOPIC ( TITLE) VALUES ( 'TOPIC2');
 			INSERT INTO TOPIC ( TITLE) VALUES ( 'TOPIC3');
+
+			INSERT INTO VIDEO ( TOPIC, TITLE, LINK) VALUES ( 1, 'VIDEO 1', 'https://www.youtube.com/embed/RxHJdapz2p0');
+			INSERT INTO VIDEO_NOTE ( VIDEO, BODY) VALUES ( 1, 'asdjnhfbjhsdbfhjdsbnfkjnzsdmjnb');
 
 			INSERT INTO FILE ( TOPIC, TITLE, TYPE, LAST_UPDATE) VALUES ( 1, 'FILE1', 'pdf', DATETIME('2024-12-25 19:00:00'));
 			INSERT INTO FILE ( TOPIC, TITLE, TYPE, LAST_UPDATE) VALUES ( 2, 'FILE1', 'pdf', DATETIME('2024-12-25 19:00:00'));

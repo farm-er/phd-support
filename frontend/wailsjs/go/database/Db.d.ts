@@ -28,6 +28,8 @@ export function GetTasks():Promise<Array<database.Task>>;
 
 export function GetTopicFiles(arg1:number):Promise<Array<database.File>>;
 
+export function GetTopicVideos(arg1:number):Promise<Array<database.Video>>;
+
 export function GetTopics():Promise<Array<database.Topic>>;
 
 export function GetWeekStatistics(arg1:number):Promise<database.WeekStatistic>;

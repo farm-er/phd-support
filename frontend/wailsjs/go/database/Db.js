@@ -54,6 +54,10 @@ export function GetTopicFiles(arg1) {
   return window['go']['database']['Db']['GetTopicFiles'](arg1);
 }
 
+export function GetTopicVideos(arg1) {
+  return window['go']['database']['Db']['GetTopicVideos'](arg1);
+}
+
 export function GetTopics() {
   return window['go']['database']['Db']['GetTopics']();
 }

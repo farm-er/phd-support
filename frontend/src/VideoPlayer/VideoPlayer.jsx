@@ -5,9 +5,17 @@ import './VideoPlayer.css'
 
 import {Editor, EditorState, RichUtils} from 'draft-js';
 import 'draft-js/dist/Draft.css';
+import { useLocation } from 'react-router-dom';
 
 
 const VideoPlayer = () => {
+
+
+    const location = useLocation()
+
+    const video = location.state
+
+    console.log( video)
 
     const [editorState, setEditorState] = useState(
         () => EditorState.createEmpty(),
@@ -77,7 +85,7 @@ const VideoPlayer = () => {
             </div>
             <div className="VideoSection">
                 <iframe
-                    src="https://www.youtube.com/embed/kQsHF7C-FUY"
+                    src={video.Link}
                     title="I did a C++ University Assignment"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                     referrerPolicy="strict-origin-when-cross-origin"
@@ -85,7 +93,7 @@ const VideoPlayer = () => {
                 ></iframe>
 
                 <div className="VideoTitle">
-                    Lorem ipsum dolor sit amet consectetur adipisicing.
+                    {video.Title}
                 </div>
             </div>
         </div>
