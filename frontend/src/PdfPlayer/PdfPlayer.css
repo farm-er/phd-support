@@ -1,0 +1,40 @@
+
+:root
+{
+    --pdfplayer-bg-color: #404040;
+    --pdfplayer-fg-color: #202020;
+}
+
+
+
+.PdfPlayer
+{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--pdfplayer-bg-color);
+}
+
+
+.PdfPlayer .PdfPlayerContent
+{
+    background-color: var(--pdfplayer-fg-color);
+    border: 1px solid var(--pdfplayer-fg-color);
+    border-radius: 5px;
+    padding: 10px;
+    height: 100%;
+    overflow: scroll;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    resize: horizontal;
+}
+
+
+.PdfPlayer .PdfPlayerContent .react-pdf__Page {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}

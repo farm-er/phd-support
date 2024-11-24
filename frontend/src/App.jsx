@@ -8,6 +8,7 @@ import Library from './Library/Library';
 import BackgroundQuit from './components/BackgroundQuit/BackgroundQuit';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import VideoPlayer from './VideoPlayer/VideoPlayer';
+import PdfPlayer from './PdfPlayer/Pdfplayer';
 
 
 
@@ -61,7 +62,7 @@ const MainLayout = () => {
                             <span>Aperçu</span>
                         </li>
                         <li onClick={(e) => setIndex(1)} className={index===1?'active':undefined}>
-                            <img src="src/assets/icons/dashboard.svg" alt="" />
+                            <img src="src/assets/icons/workshop.svg" alt="" />
                             <span>Production</span>
                         </li>
                         <li onClick={(e) => setIndex(4)} className={index===4?'active':undefined}>
@@ -101,6 +102,8 @@ function App() {
                 <Route  path='/' element={<MainLayout/>} />
 
                 <Route  path='/videoplayer' element={<VideoPlayer/>} />
+
+                <Route  path='/pdfplayer' element={<PdfPlayer/>} />
 
             </Routes>
         </BrowserRouter>

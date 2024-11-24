@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-const FileComp = ({ f, deleteFileFunc, deleteVideoFunc, openVideoPlayer, i}) => {
+const FileComp = ({ f, deleteFileFunc, deleteVideoFunc, openVideoPlayer, openPdfPlayer, i}) => {
 
 
     function deleteRessource(e) {
@@ -25,17 +25,15 @@ const FileComp = ({ f, deleteFileFunc, deleteVideoFunc, openVideoPlayer, i}) => 
     }
 
 
-    // TODO: add players for pdf and word files
     function openPlayer() {
 
         switch (f.Type) {
             case 'video':
-                console.log( "i passed: ", f)
                 openVideoPlayer( f)
                 break;
 
             case 'pdf':
-                
+                openPdfPlayer( f)
                 break;
         
             case 'doc', 'docx':
@@ -210,6 +208,10 @@ const Library = () => {
 
     function openVideoPlayer( video) {
         navigate( '/videoplayer', { state: video})
+    }
+
+    function openPdfPlayer( pdfFile) {
+        navigate( '/pdfplayer', { state: pdfFile})
     }
 
     const [ topics, setTopics] = useState([])
@@ -514,6 +516,7 @@ const Library = () => {
                                                 f={f}
                                                 deleteFileFunc={deleteFileFunc}
                                                 openVideoPlayer={openVideoPlayer}
+                                                openPdfPlayer={openPdfPlayer}
                                                 deleteVideoFunc={deleteVideoFunc}
                                             />
                                         )
@@ -529,6 +532,7 @@ const Library = () => {
                                         f={f}
                                         deleteFileFunc={deleteFileFunc}
                                         openVideoPlayer={openVideoPlayer}
+                                        openPdfPlayer={openPdfPlayer}
                                         deleteVideoFunc={deleteVideoFunc}
                                     />
                                 )
