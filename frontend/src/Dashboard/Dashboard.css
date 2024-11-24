@@ -11,10 +11,10 @@
     height: 100vh;
     display: grid;
     grid-template-columns: 300px 1fr;
-    grid-template-rows: 40% auto;
+    grid-template-rows: 1fr 1fr;
     grid-template-areas: 
-        "stat1 stat2"
-        "last tasks"
+        "tasks stat1"
+        "last stat2"
     ;
     gap: 0.5rem;
     padding: 0.5rem;
@@ -28,21 +28,15 @@
     border-radius: 10px;
 }
 
-.WordCount
+.TimeSpentProdCons
 {
     grid-area: stat1;
 }
 
-.WordCount svg
-{
-    overflow: inherit !important;
-}
-
-.TimeSpent
+.TimeSpentActivity
 {
     grid-area: stat2;
 }
-
 
 .LastResource
 {
@@ -63,15 +57,76 @@
 .tasks
 {
     grid-area: tasks;
-    padding: 10px 50px;
+    padding: 10px 20px;
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+}
+
+.tasks > div
+{
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10%;
+}
+
+.tasks .taskState .taskStateColor
+{
+    width: 30px;
+    aspect-ratio: 1;
+    border-radius: 5px;
+}
+
+.tasks .taskState h3 span
+{
+    color: var(--nav-color);
+}
+
+.tasks .todoState .todoStateColor
+{
+    background-color: red;
+
+} 
+
+.tasks .inProgressState .inProgressStateColor
+{
+    background-color: orange;
+} 
+
+
+.tasks .doneState .doneStateColor
+{
+    background-color: green;
+} 
+
+
+.tasks .holdState .holdStateColor
+{
+    background-color: gray;
+}
+
+.tasks .taskAction
+{
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 
-.tasks img
+.tasks .taskAction button
 {
-    height: 50%;
+    padding: 10px 20px;
+    border: 1px solid var(--nav-color);
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+
+.tasks .taskAction button:hover
+{
+    outline: 1px solid var(--nav-color);
+    transform: scale(1.05);
 }
 

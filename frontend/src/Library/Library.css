@@ -101,6 +101,8 @@
 
 .File .fileDelete
 {
+    height: 60%;
+    aspect-ratio: 1;
     border: 1px solid black;
     border-radius: 10px;
     padding: 5px;
@@ -110,9 +112,10 @@
     transition: all 0.3s ease;
 }
 
-.File .fileDelete:hover
+.File .fileDelete img
 {
-    transform: scale(1.05);
+    height: 100%;
+    aspect-ratio: 1;
 }
 
 .LibraryTopics

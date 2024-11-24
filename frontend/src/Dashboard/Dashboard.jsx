@@ -129,28 +129,31 @@ const Dashboard = ({gotoTasks}) => {
 
     return (
         <div className="Dashboard">
-            <div className="WordCount" style={{overflow:'visible'}}>
+            {/* This is a chart to show time spent working using the app */}
+            <div className="TimeSpentProdCons">
                 <ResponsiveContainer width="100%" height="100%">
-                    <PieChart width={400} height={400}>
-                        <Pie
-                            activeIndex={pieIndex}
-                            activeShape={renderActiveShape}
-                            data={pieData}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={60}
-                            outerRadius={80}
-                            fill="#8884d8"
-                            dataKey="value"
-                            onMouseEnter={onPieEnter}
-                            onMouseLeave={onPieLeave}
-                        />
+                    <BarChart
+                        width={500}
+                        height={300}
+                        data={barGraphData}
+                        margin={{
+                            top: 20,
+                            right: 30,
+                            left: 20,
+                            bottom: 5,
+                        }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="day" />
+                        <YAxis />
+                        <Tooltip />
                         <Legend />
-                    </PieChart>
+                        <Bar dataKey="consumption" stackId="a" fill="#8884d8" />
+                        <Bar dataKey="production" stackId="a" fill="#82ca9d" />
+                    </BarChart>
                 </ResponsiveContainer>
             </div>
-            {/* This is a chart to show time spent working using the app */}
-            <div className="TimeSpent">
+            <div className="TimeSpentActivity">
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                         width={500}
@@ -177,13 +180,25 @@ const Dashboard = ({gotoTasks}) => {
                 <p>Vous êtes à jour</p>
             </div>
             <div className="tasks">
-                <div className="task">
-                    <h3>You have {stats.Todo} Tasks to start</h3>
-                    <h3>{stats.InProgress} Tasks to complete</h3>
-                    <h3>You've done {stats.Done}</h3>
-                    <h3>You have {stats.Hold} on hold</h3>
-                    <button onClick={() => gotoTasks()}>Entrer</button>
-                </div>
+              <div className="taskState todoState">
+                <div className="taskStateColor todoStateColor"></div>
+                <h3> <span>{stats.Todo}</span> Tasks to start</h3>
+              </div>
+              <div className="taskState inProgressState">
+                <div className="taskStateColor inProgressStateColor"></div>
+                <h3><span>{stats.InProgress}</span> Tasks to complete</h3>
+              </div>
+              <div className="taskState doneState">
+                <div className="taskStateColor doneStateColor"></div>
+                <h3> <span>{stats.Done}</span> are done</h3>
+              </div>
+              <div className="taskState holdState">
+                <div className="taskStateColor holdStateColor"></div>
+                <h3><span>{stats.Hold}</span> tasks on hold</h3>
+              </div>
+              <div className="taskAction">
+                <button onClick={() => gotoTasks()}>plus</button>
+              </div>
             </div>
         </div>
     );

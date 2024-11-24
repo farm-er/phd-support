@@ -23,3 +23,11 @@
 2024/11/24 14:46:59 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
 2024/11/24 14:47:00 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
 2024/11/24 14:47:00 suppressing panic for copyResponse error in test; copy error: unable to finish request: StatusCodes not supported: 500 - Internal Server Error
+2024/11/24 16:54:03 DeleteFile:  remove /home/apollo/Documents/phd_support/topics/TOPIC1/FILE1.pdf: no such file or directory
+2024/11/24 16:54:03 DeleteFile:  remove /home/apollo/Documents/phd_support/topics/TOPIC1/FILE1.pdf: no such file or directory
+2024/11/24 16:54:03 DeleteFile:  remove /home/apollo/Documents/phd_support/topics/TOPIC1/FILE1.pdf: no such file or directory
+2024/11/24 18:42:04 DeleteFile:  remove /home/apollo/Documents/phd_support/topics/TOPIC2/FILE1.pdf: no such file or directory
+2024/11/24 18:42:08 DeleteFile:  remove /home/apollo/Documents/phd_support/topics/TOPIC1/FILE1.pdf: no such file or directory
+2024/11/24 18:42:09 DeleteFile:  remove /home/apollo/Documents/phd_support/topics/TOPIC1/FILE1.pdf: no such file or directory
+2024/11/24 18:42:09 DeleteFile:  remove /home/apollo/Documents/phd_support/topics/TOPIC1/FILE1.pdf: no such file or directory
+2024/11/24 18:42:09 DeleteFile:  remove /home/apollo/Documents/phd_support/topics/TOPIC1/FILE1.pdf: no such file or directory

@@ -67,7 +67,7 @@ const FileComp = ({ f, deleteFileFunc, deleteVideoFunc, openVideoPlayer, openPdf
             <div className="fileDelete"
                 onClick={deleteRessource}
             >
-                <i className='bx bx-trash' ></i>
+                <img src="src/assets/icons/trash.svg" alt="" />
             </div>
         </div>
     );
@@ -500,7 +500,7 @@ const Library = () => {
             <div className="LibraryBody">
                 {
                     selected !== null&&(
-                        topics[selected].files.length === 0?(
+                        topics[selected]?.files.length === 0?(
                             <div className="NoFiles">
                                 <h2>No files available</h2>
                             </div>
