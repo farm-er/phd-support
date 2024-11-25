@@ -9,6 +9,8 @@ import BackgroundQuit from '../components/BackgroundQuit/BackgroundQuit';
 const Task = ({ moveTask, stopMoving, styleChoice, xy, task, i }) => {
 
 
+    const [ open, setOpen] = useState( false)
+
     const [ moving, setMoving] = useState( false)
 
 
@@ -18,28 +20,50 @@ const Task = ({ moveTask, stopMoving, styleChoice, xy, task, i }) => {
             : task.List === 'hold' ? 3 
             : -1
 
+
     return (
         <div
-            className="Task"
+            className={`Task ${open&&'open'}`}
             style={{width:styleChoice&&'200px', position:styleChoice?'fixed':'static',top:xy.y,left:xy.x}}
             onMouseDown={() => { setMoving( true);moveTask( list, i)}}
             onMouseUp={(e) => { if (moving===false) return;stopMoving(e);setMoving( false)}}
         >
             <div className="TaskColor"></div>
-            <div className="TaskBody">
-                <div className="TaskCreated">
-                    <i className='bx bxs-calendar'></i>
-                    <h5>{task.Created}</h5>
-                </div>
-                <div className="TaskFor">
-                    <i className='bx bxs-calendar'></i>
-                    <h5>{task.For}</h5>
-                </div>
-                <div className="TaskTitle">
-                    <i className='bx bx-edit-alt' ></i>
+            <div className="TaskContent">
+                <div className="TaskHeader">
                     <h5>{task.Title}</h5>
+                    <div className="TaskExpand"
+                        onMouseDown={(e) => e.stopPropagation()}
+                        onClick={ (e) => {
+                            e.stopPropagation()
+                            setOpen( prev => !prev)
+                        }}
+                    >
+                        <img src="/src/assets/icons/taskExpand.svg" alt="" />
+                    </div>
                 </div>
+                {
+                    open&&(
+                        <div className="TaskBody">
+                            <div className="TaskCreated">
+                                <i className='bx bxs-calendar'></i>
+                                <h5>{task.Created}</h5>
+                            </div>
+                            <div className="TaskFor">
+                                <i className='bx bxs-calendar'></i>
+                                <h5>{task.For}</h5>
+                            </div>
+                            <div className="TaskTitle">
+                                <i className='bx bx-edit-alt' ></i>
+                                <h5>{task.Title}</h5>
+                            </div>
+                        </div>
+                    )
+                }
             </div>
+            
+            
+            
         </div>
     )
 }

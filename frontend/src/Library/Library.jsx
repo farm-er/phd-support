@@ -83,12 +83,14 @@ const AddTopicForm = ({ close, addTopic}) => {
 
     return (
         <div className="AddTopicForm">
-            <input 
-                type="text"
-                placeholder='name ...'
-                value={title}
-                onChange={(e) => setTitle( e.target.value)}
-            />
+            <div className="AddTopicName">
+                <input 
+                    type="text"
+                    placeholder='name ...'
+                    value={title}
+                    onChange={(e) => setTitle( e.target.value)}
+                />
+            </div>
             <div className="AddTopicFormAction">
                 <button
                     onClick={() => { addTopic( title); close()}}
