@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import './Tasks.css';
 
 import { GetTasks, AddTask, UpdateTaskList, RemoveTask } from '../../wailsjs/go/database/Db';
 import BackgroundQuit from '../components/BackgroundQuit/BackgroundQuit';
-
 
 
 const Task = ({ moveTask, stopMoving, styleChoice, xy, task, i }) => {
@@ -11,26 +10,30 @@ const Task = ({ moveTask, stopMoving, styleChoice, xy, task, i }) => {
 
     const [ open, setOpen] = useState( false)
 
+
     const [ moving, setMoving] = useState( false)
 
 
-    const list = task.List === 'todo' ? 0 
-            : task.List === 'inprogress' ? 1 
-            : task.List === 'done' ? 2 
-            : task.List === 'hold' ? 3 
-            : -1
-
 
     return (
+        <>
+        
         <div
             className={`Task ${open&&'open'}`}
             style={{width:styleChoice&&'200px', position:styleChoice?'fixed':'static',top:xy.y,left:xy.x}}
-            onMouseDown={() => { setMoving( true);moveTask( list, i)}}
-            onMouseUp={(e) => { if (moving===false) return;stopMoving(e);setMoving( false)}}
+
         >
+            
             <div className="TaskColor"></div>
             <div className="TaskContent">
-                <div className="TaskHeader">
+                <div className="TaskHeader"
+                    onMouseDown={() => { setMoving( true);moveTask( task.List === 'todo' ? 0 
+                        : task.List === 'inprogress' ? 1 
+                        : task.List === 'done' ? 2 
+                        : task.List === 'hold' ? 3 
+                        : -1, i)}}
+                    onMouseUp={(e) => { if (moving===false) return;stopMoving(e);setMoving( false)}}
+                >
                     <h5>{task.Title}</h5>
                     <div className="TaskExpand"
                         onMouseDown={(e) => e.stopPropagation()}
@@ -45,17 +48,10 @@ const Task = ({ moveTask, stopMoving, styleChoice, xy, task, i }) => {
                 {
                     open&&(
                         <div className="TaskBody">
-                            <div className="TaskCreated">
-                                <i className='bx bxs-calendar'></i>
-                                <h5>{task.Created}</h5>
-                            </div>
                             <div className="TaskFor">
-                                <i className='bx bxs-calendar'></i>
-                                <h5>{task.For}</h5>
-                            </div>
-                            <div className="TaskTitle">
-                                <i className='bx bx-edit-alt' ></i>
-                                <h5>{task.Title}</h5>
+                                <img src="src/assets/icons/calendar.svg" alt="" />
+                                {/* // TODO: update task from the root component: TASKS */}
+                                <input type="date" onChange={(e) => setTask( prev => ({...prev, For: e.target.value}))} value={task.For}/>
                             </div>
                         </div>
                     )
@@ -65,8 +61,10 @@ const Task = ({ moveTask, stopMoving, styleChoice, xy, task, i }) => {
             
             
         </div>
+        </>
     )
 }
+
 
 const AddTaskComp = ({ show, close, listId, addTask}) => {
 
@@ -76,11 +74,11 @@ const AddTaskComp = ({ show, close, listId, addTask}) => {
     const [ body, setBody] = useState('')
 
     // FOR WILL REPRESENT THE NUMBER OF HOURS FOR THE TASK
-    const [ For, setFor] = useState(0)
+    const [ For, setFor] = useState('')
 
 
     function clearFields() {
-        setFor( 0)
+        setFor( '')
         setTitle('')
         setBody('')
         close()
@@ -113,10 +111,9 @@ const AddTaskComp = ({ show, close, listId, addTask}) => {
                     <h4>Duree:</h4>
                     <div className="AddTaskFor">
                         <input 
-                            type="number"
+                            type="date"
                             value={For}
                             onChange={ (e) => setFor( e.target.value)}
-                            min={1}
                         />
                     </div>
 
@@ -129,7 +126,7 @@ const AddTaskComp = ({ show, close, listId, addTask}) => {
                         />
                     </div>
 
-                <button onClick={() => {addTask( list, title, body, parseInt(For)); clearFields()}}> Ajouter </button>
+                <button onClick={() => {addTask( list, title, body, For); clearFields()}}> Ajouter </button>
             </div>  
         </>
     );
@@ -195,7 +192,7 @@ const Tasks = ({Return}) => {
     function handleMouse(e) {
         const x = e.clientX; // X-coordinate within the viewport
         const y = e.clientY; // Y-coordinate within the viewport
-        setXY({x:x-20,y:y-20})
+        setXY({x:x-20,y:y-50})
     }
 
     // when the user holds the task 
@@ -259,6 +256,7 @@ const Tasks = ({Return}) => {
             const t = getTask()
 
             // delete the task 
+            console.log( "removing: ", t)
             RemoveTask( t.Id).catch( (e)=>console.log("Tasks: ", e))
         }else {
             // check if it's going to get deleted
@@ -313,7 +311,6 @@ const Tasks = ({Return}) => {
     }
 
 
-    // TODO: add a way to calculate hours for every list
 
     const [ addTask, setAddTask] = useState({show: false, listId: 0})
 
@@ -330,6 +327,9 @@ const Tasks = ({Return}) => {
 
                 let newData = { ...prev}
                 
+                console.log( res)
+                console.log( list, title, For, body)
+                
                 switch (list) {
                     case "todo":
                         newData.todo = [ res, ...newData.todo]
@@ -344,6 +344,8 @@ const Tasks = ({Return}) => {
                         newData.hold = [ res, ...newData.hold]
                         break;
                 }
+
+                console.log( newData)
                 return newData;
             })
         })
@@ -374,7 +376,11 @@ const Tasks = ({Return}) => {
                 <div className="list">
                     <div className="listHeader">
                         <h5>TODO</h5>
-                        <i className='bx bx-plus' onClick={()=> setAddTask( prev => ({ show: true, listId: 0}))}></i>
+                        <div className="OpenAddTask"
+                            onClick={ () => setAddTask({show: true, listId: 0})}
+                        >
+                            <img src="src/assets/icons/add.svg" alt="" />
+                        </div>
                     </div>
                     <div className="listData">
                         <p>{data.todo.length}</p> <p></p>
@@ -402,7 +408,11 @@ const Tasks = ({Return}) => {
                 <div className="list">
                     <div className="listHeader">
                         <h5>IN PROGRESS</h5>
-                        <i className='bx bx-plus' onClick={()=> setAddTask( prev => ({ show: true, listId: 1}))}></i>
+                        <div className="OpenAddTask"
+                            onClick={ () => setAddTask({show: true, listId: 1})}
+                        >
+                            <img src="src/assets/icons/add.svg" alt="" />
+                        </div>
                     </div>
                     <div className="listData">
                         <p>{data.inprogress.length}</p> <p>6h</p>
@@ -430,7 +440,11 @@ const Tasks = ({Return}) => {
                 <div className="list">
                     <div className="listHeader">
                         <h5>DONE</h5>
-                        <i className='bx bx-plus' onClick={()=> setAddTask( prev => ({ show: true, listId: 2}))}></i>
+                        <div className="OpenAddTask"
+                            onClick={ () => setAddTask({show: true, listId: 2})}
+                        >
+                            <img src="src/assets/icons/add.svg" alt="" />
+                        </div>
                     </div>
                     <div className="listData">
                         <p>{data.done.length}</p> <p>6h</p>
@@ -458,7 +472,11 @@ const Tasks = ({Return}) => {
                 <div className="list">
                     <div className="listHeader">
                         <h5>HOLD</h5>
-                        <i className='bx bx-plus' onClick={()=> setAddTask( prev => ({ show: true, listId: 3}))}></i>
+                        <div className="OpenAddTask"
+                            onClick={ () => setAddTask({show: true, listId: 3})}
+                        >
+                            <img src="src/assets/icons/add.svg" alt="" />
+                        </div>
                     </div>
                     <div className="listData">
                         <p>{data.hold.length}</p> <p>6h</p>

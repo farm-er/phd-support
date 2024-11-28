@@ -35,13 +35,13 @@ func (d *Db) GetTasks() ([]Task, error) {
 }
 
 // For is the number of hours until the deadline
-func (d *Db) AddTask(list string, title string, For int, body string) (Task, error) {
+func (d *Db) AddTask(list string, title string, For string, body string) (Task, error) {
 
 	task := Task{
 		List:    list,
 		Title:   title,
 		Created: time.Now().Format("2006-01-02 15:04:05"),
-		For:     time.Now().Add(time.Duration(For) * time.Hour).Format("2006-01-02 15:04:05"),
+		For:     For, //time.Now().Add(time.Duration(For) * time.Hour).Format("2006-01-02"),
 		Body:    body,
 	}
 

@@ -4,7 +4,7 @@ import {database} from '../models';
 
 export function AddFileToTopic(arg1:number,arg2:string,arg3:string):Promise<database.File>;
 
-export function AddTask(arg1:string,arg2:string,arg3:number,arg4:string):Promise<database.Task>;
+export function AddTask(arg1:string,arg2:string,arg3:string,arg4:string):Promise<database.Task>;
 
 export function AddTopic(arg1:string):Promise<database.Topic>;
 
